@@ -1,0 +1,57 @@
+import tkinter
+from tkinter import*
+import pymysql
+from tkinter import messagebox
+def showdispatchsave():
+    t=tkinter.Tk()
+    t.geometry('700x700')
+    t.title('my screen')
+    r=Label(t,text='Dispatch Save Form',font=('arial',20),fg='red',bg='yellow')
+    r.place(x=120,y=10)
+    t.config(bg='teal')
+    def savedata():
+        db=pymysql.connect(host='localhost',user='root',password='root',database='ims')
+        cur=db.cursor()
+        xa=int(e1.get())
+        xb=e2.get()
+        xc=e3.get()
+        sql="insert into dispatch values(%d,'%s','%s')"%(xa,xb,xc)   
+        cur.execute(sql)
+        db.commit()
+        messagebox.showinfo('Hi','saved')
+        e1.delete(0,END)
+        e2.delete(0,END)
+        e3.delete(0,END)
+        db.close()    
+    def checkdata():
+            db=pymysql.connect(host='localhost',user='root',password='root',database='ims')
+            cur=db.cursor()
+            xa=int(e1.get())
+            sql="select count(*) from dispatch where billno=%d"%(xa)
+            cur.execute(sql)
+            data=cur.fetchone()
+            if data[0]==0:
+                messagebox.showinfo('hi','ok goahead')
+            else:
+                messagebox.showinfo('hi','Alreday Token')
+                db.close()
+    
+    a=Label(t,text='bill no')
+    a.place(x=50,y=50)
+    e1=Entry(t,width=20)
+    e1.place(x=300,y=50)
+    btf=Button(t,text='Check',command=checkdata)
+    btf.place(x=550,y=50)
+    a=Label(t,text='order no')
+    a.place(x=50,y=100)
+    e2=Entry(t,width=20)
+    e2.place(x=300,y=100)
+    a=Label(t,text='dispatchdate')
+    a.place(x=50,y=150)
+    e3=Entry(t,width=20)
+    e3.place(x=300,y=150)
+    bt=Button(t,text='save',width=10,command=savedata)
+    bt.place(x=100,y=200)
+    bt=Button(t,text='close',width=10)
+    bt.place(x=300,y=200)
+    t.mainloop()

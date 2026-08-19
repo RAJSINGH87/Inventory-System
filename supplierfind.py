@@ -1,0 +1,55 @@
+import tkinter 
+from tkinter import *
+from tkinter import messagebox
+from tkinter import ttk
+import pymysql 
+def showsupplierfind():
+
+    t=tkinter.Tk()
+    t.geometry('700x700')
+    t.title('Supplier')
+    r=Label(t,text='Supplier Find Form',font=('arial',20),fg='blue',bg='yellow')
+    r.place(x=120,y=10)
+    t.config(bg='brown')
+    
+    def finddata():
+        db=pymysql.connect(host='localhost',user='root',password='root',database='ims')
+        cur=db.cursor()
+        xa=int(e1.get())
+        sql="select sname,address,email,phone,catid from supplier where supplierid=%d"%(xa)
+        cur.execute(sql)
+        data=cur.fetchone()
+        e2.insert(0,data[0])
+        e3.insert(0,data[1])
+        e4.insert(0,data[2])
+        e5.insert(0,data[3])
+        e6.insert(0,data[4])
+        db.close()
+    
+    a=Label(t,text='Supplier id')
+    a.place(x=50,y=50)
+    e1=Entry(t,width=20)
+    e1.place(x=400,y=50)
+    b=Label(t,text='Sname')
+    b.place(x=50,y=100)
+    e2=Entry(t,width=20)
+    e2.place(x=400,y=100)
+    c=Label(t,text='Address')
+    c.place(x=50,y=150)
+    e3=Entry(t,width=20)
+    e3.place(x=400,y=150)
+    d=Label(t,text='Email')
+    d.place(x=50,y=200)
+    e4=Entry(t,width=20)
+    e4.place(x=400,y=200)
+    f=Label(t,text='Phone')
+    f.place(x=50,y=250)
+    e5=Entry(t,width=20)
+    e5.place(x=400,y=250)
+    g=Label(t,text='Cat id')
+    g.place(x=50,y=300)
+    e6=Entry(t,width=20)
+    e6.place(x=400,y=300)
+    bt1=Button(t,text='find',width=20,command=finddata)
+    bt1.place(x=50,y=350)
+    t.mainloop()
